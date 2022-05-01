@@ -11,7 +11,10 @@
   <modules>
     <module>team-service</module>
     <module>price-service</module>
-      <module>rabbitMQ</module>
+      <module>queue</module>
+    <module>currency-service</module>
+    <module>api-gateway</module>
+    <module>identity-service</module>
   </modules>
 
   <name>microservices</name>

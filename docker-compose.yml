@@ -1,0 +1,42 @@
+version: "3"
+services:
+  teamServicePostgres:
+    container_name: teamServicePostgres
+    image: 'postgres:13.1-alpine'
+    environment:
+      POSTGRES_USER: compose-postgres
+      POSTGRES_PASSWORD: compose-postgres
+      POSTGRES_DB: team-service
+      PGDATA: /data/postgres
+
+    volumes:
+      - teamServicePostgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - teamService
+    restart: unless-stopped
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - teamServicePostgres
+    networks:
+      - teamService
+    restart: unless-stopped
+
+volumes:
+  teamServicePostgres:
+  pgadmin:
+
+networks:
+  teamService:
+    driver: bridge
+

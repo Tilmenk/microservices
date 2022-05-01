@@ -1,8 +1,11 @@
-package com.tilmenk.teamService.pokemon;
+package com.tilmenk.teamService.controller;
 
+import com.tilmenk.teamService.model.Pokemon;
+import com.tilmenk.teamService.service.PokemonService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +26,14 @@ public class PokemonController {
     @Operation(summary = "get all pokemon")
     @GetMapping
     public List<Pokemon> getPokemon() {
-        return pokemonService.getPokemon();
+         return pokemonService.getPokemonFromWarehouse();
     }
+
+    @PostMapping
+    public void evictCache() {
+         pokemonService.evictCache();
+    }
+
+
 
 }

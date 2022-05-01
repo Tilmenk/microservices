@@ -1,4 +1,4 @@
-package com.tilmenk.teamService.pokemon;
+package com.tilmenk.teamService.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
-package com.tilmenk.teamService.pokemon;
+package com.tilmenk.teamService.repository;
 
+import com.tilmenk.teamService.model.Pokemon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

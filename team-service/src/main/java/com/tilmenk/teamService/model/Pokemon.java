@@ -1,13 +1,21 @@
-package com.tilmenk.teamService.pokemon;
+package com.tilmenk.teamService.model;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.io.Serializable;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table
-public class Pokemon {
+public class Pokemon implements Serializable {
 
     @Id
     private String name;
@@ -31,6 +39,9 @@ public class Pokemon {
 
     private boolean legendary;
 
+    private String ImageUrl_large;
+    private String ImageUrl_small;
+
 
     @Transient
     private Integer costs;
@@ -50,96 +61,14 @@ public class Pokemon {
         this.legendary = legendary;
     }
 
-    public Pokemon() {
-
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType1() {
-        return type1;
-    }
-
-    public void setType1(String typ1) {
-        this.type1 = typ1;
-    }
-
-    public String getType2() {
-        return type2;
-    }
-
-    public void setType2(String typ2) {
-        this.type2 = typ2;
-    }
-
-    public Integer getHealth() {
-        return health;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
-
-    public Integer getAttack() {
-        return attack;
-    }
-
-    public void setAttack(Integer attack) {
-        this.attack = attack;
-    }
-
-    public Integer getDefense() {
-        return defense;
-    }
-
-    public void setDefense(Integer defense) {
-        this.defense = defense;
-    }
-
-    public Integer getAttack_sp() {
-        return attack_sp;
-    }
-
-    public void setAttack_sp(Integer attack_sp) {
-        this.attack_sp = attack_sp;
-    }
-
-    public Integer getDefense_sp() {
-        return defense_sp;
-    }
-
-    public void setDefense_sp(Integer defense_sp) {
-        this.defense_sp = defense_sp;
-    }
-
-    public boolean isLegendary() {
-        return legendary;
-    }
-
-    public void setLegendary(boolean legendary) {
-        this.legendary = legendary;
-    }
-
-    public Integer getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(Integer speed) {
-        this.speed = speed;
-    }
-
     public Integer getCosts() {
         int tempCosts =
                 (this.attack + this.attack_sp + this.defense + this.defense_sp + this.speed + this.health) / 6;
         if (this.legendary) tempCosts *= 1.5;
         return tempCosts;
     }
+
+
 
     @Override
     public String toString() {

@@ -1,23 +1,17 @@
-package com.tilmenk.priceService;
+package com.tilmenk.rabbitmq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
 @Slf4j
-public class PriceServiceApp {
+public class RabbitMqApp {
     public static void main(String[] args) {
-        SpringApplication.run(PriceServiceApp.class, args);
+        SpringApplication.run(RabbitMqApp.class, args);
     }
 
-    @GetMapping(value = "/api/test")
-    PriceResponse hello() {
-        log.info("Get / ");
-        return new PriceResponse(20);
-    }
 }

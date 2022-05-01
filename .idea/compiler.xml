@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="team-service" />
         <module name="price-service" />
+        <module name="queue" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

@@ -11,6 +11,7 @@
   <modules>
     <module>team-service</module>
     <module>price-service</module>
+      <module>rabbitMQ</module>
   </modules>
 
   <name>microservices</name>

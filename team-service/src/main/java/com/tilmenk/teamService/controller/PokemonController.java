@@ -23,10 +23,15 @@ public class PokemonController {
         this.pokemonService = pokemonService;
     }
 
-    @Operation(summary = "get all pokemon")
+   /* @Operation(summary = "get all pokemon")
     @GetMapping
     public List<Pokemon> getPokemon() {
          return pokemonService.getPokemonFromWarehouse();
+    }*/
+
+    @GetMapping
+    public void test(){
+        pokemonService.test();
     }
 
     @PostMapping

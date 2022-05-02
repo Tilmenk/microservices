@@ -22,23 +22,11 @@ public class PokemonController {
     public PokemonController(PokemonService pokemonService) {
         this.pokemonService = pokemonService;
     }
-
-   /* @Operation(summary = "get all pokemon")
+    @Operation(summary = "get Pokemons out of this Service")
     @GetMapping
-    public List<Pokemon> getPokemon() {
-         return pokemonService.getPokemonFromWarehouse();
-    }*/
-
-    @GetMapping
-    public void test(){
-        pokemonService.test();
+    public List<Pokemon> getPokemons(){
+        return pokemonService.getPokemons();
     }
-
-    @PostMapping
-    public void evictCache() {
-         pokemonService.evictCache();
-    }
-
 
 
 }

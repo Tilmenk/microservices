@@ -1,23 +1,19 @@
-package com.tilmenk.teamService.model;
+package com.tilmenk.rabbitmq.model;
 
-import lombok.*;
+import com.tilmenk.rabbitmq.responseBodies.CurrenciesResponse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table
-@ToString
+@Data
+@Builder
 public class Pokemon implements Serializable {
 
-    @Id
     private String name;
 
     private String type1;
@@ -40,7 +36,10 @@ public class Pokemon implements Serializable {
     private boolean legendary;
 
     private String ImageUrl_large;
+
     private String ImageUrl_small;
+
+    private CurrenciesResponse costs;
 
 }
 

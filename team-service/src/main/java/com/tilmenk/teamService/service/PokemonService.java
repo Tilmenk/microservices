@@ -2,65 +2,84 @@ package com.tilmenk.teamService.service;
 
 import com.tilmenk.teamService.model.Pokemon;
 import com.tilmenk.teamService.repository.PokemonRepository;
-import com.tilmenk.teamService.responses.PriceResponse;
-import lombok.AllArgsConstructor;
+import com.tilmenk.teamService.requestBodies.ExternalPokeApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class PokemonService {
     private final PokemonRepository pokemonRepository;
 
-    private final WebClient localApiClient;
-    private final RestTemplate restTemplate;
+    private final WebClient wareHouseApiClient;
+    private final WebClient externalPokeApiClient;
 
+    //deprecated
+    //private final RestTemplate restTemplate;
+    private static final String WAREHOUSE_URL_POKEMON = "http" +
+            "://localhost:8080/api/pokemon";
 
+    private static final String EXTERNAL_POKEAPI_URL = "https://pokeapi" +
+            ".co/api/v2/pokemon/";
 
     @Autowired
     public PokemonService(PokemonRepository pokemonRepository,
-                          WebClient.Builder wareHouseApiClientBuilder,
-                          RestTemplate restTemplate) {
+                          WebClient.Builder wareHouseApiClientBuilder) {
         this.pokemonRepository = pokemonRepository;
-        this.localApiClient = wareHouseApiClientBuilder.baseUrl("http" +
-                "://localhost:8080/api/pokemon").build();
-        this.restTemplate = restTemplate;
+        this.wareHouseApiClient = wareHouseApiClientBuilder.baseUrl(WAREHOUSE_URL_POKEMON).build();
+        this.externalPokeApiClient = wareHouseApiClientBuilder.baseUrl(EXTERNAL_POKEAPI_URL).build();
     }
 
-    public List<Pokemon> getPokemon() {
+
+    @Cacheable("pokemonsInThisService")
+    public List<Pokemon> getPokemons() {
         return pokemonRepository.findAll();
     }
 
-    @Cacheable("pokemon")
-    public List<Pokemon> getPokemonFromWarehouse() {
-        log.info("Requesting Pokemon from warehouse..");
-        return localApiClient.get().uri("/").retrieve().bodyToFlux(Pokemon.class).collectList().block();
+
+    // warehouse
+    private List<Pokemon> fetchPokemonsFromWarehouse() {
+        try {
+            return wareHouseApiClient.get().uri("/").retrieve().bodyToFlux(Pokemon.class).collectList().block();
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+        }
+        return List.of();
     }
 
-    @CacheEvict(value="pokemon", allEntries = true)
-    public void evictCache() {
-       log.info("evicting pokemon cache");
+    private void addPokemonsToServiceDb(List<Pokemon> pokemonsToAdd) {
+        for (Pokemon pokemon : pokemonsToAdd) {
+            Optional<Pokemon> pokemonFromThisDb =
+                    pokemonRepository.findPokemonByName(pokemon.getName());
+            if(!pokemonFromThisDb.isPresent()) {
+                fetchImageUrlsForPokemon(pokemon);
+                pokemonRepository.save(pokemon);
+            } else if (pokemonFromThisDb.get().getImageUrl_large() == null) {
+                fetchImageUrlsForPokemon(pokemon);
+                pokemonRepository.save(pokemon);
+            }
+        }
     }
 
-
-    public void test () {
-
-        PriceResponse priceResponse = restTemplate.getForObject(
-                "http://localhost:8082/api/test/", PriceResponse.class
-        );
-
-        log.info(String.valueOf(priceResponse));
+    private void fetchImageUrlsForPokemon(Pokemon pokemon) {
+        ExternalPokeApiResponse externalPokeApiResponse =
+                externalPokeApiClient.get().uri(pokemon.getName()).retrieve().bodyToMono(ExternalPokeApiResponse.class).block();
+        pokemon.setImageUrl_large(externalPokeApiResponse.getSprites().getFront_default());
+        pokemon.setImageUrl_small(externalPokeApiResponse.getSprites().getOther().getOfficial_artwork().getFront_default());
     }
 
-
-
+    // Gets called once on startup
+    @CacheEvict("pokemonsInThisService")
+    @Cacheable("pokemonsFetchedFromWarehouse")
+    public void fetchPokemonsFromWarehouseAndSave() {
+        addPokemonsToServiceDb(fetchPokemonsFromWarehouse());
+    }
 
 }

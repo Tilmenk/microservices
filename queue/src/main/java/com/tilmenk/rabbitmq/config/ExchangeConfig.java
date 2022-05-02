@@ -1,6 +1,7 @@
-package com.tilmenk.rabbitmq.config.MessagingConfig;
+package com.tilmenk.rabbitmq.config;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -10,25 +11,13 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public class MessagingConfig {
+public class ExchangeConfig {
 
-    public static final String QUEUE = "kbe_q";
-    public static final String EXCHANGE = "kbe_exchange";
-    public static final String ROUTING_KEY = "kbe_routingkey";
+    public static final String EXCHANGE_NAME = "DEFAULT_EXCHANGE";
 
     @Bean
-    public Queue queue(){
-        return new Queue(QUEUE);
-    }
-
-    @Bean
-    public TopicExchange exchange(){
-        return new TopicExchange(EXCHANGE);
-    }
-
-    @Bean
-    public Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
+    public TopicExchange exchange() {
+        return new TopicExchange(EXCHANGE_NAME);
     }
 
     public MessageConverter converter() {
@@ -41,6 +30,5 @@ public class MessagingConfig {
                 new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(converter());
         return rabbitTemplate;
-
     }
 }

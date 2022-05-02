@@ -1,5 +1,4 @@
-package com.tilmenk.rabbitmq.dto;
-
+package com.tilmenk.rabbitmq.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +11,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderStatus implements Serializable {
+public class Order implements Serializable {
 
-    private Order order;
-    private String status;//progress,completed
-    private String message;
+    private String orderId;
+    private String name;
+    private int qty;
+    private double price;
 }

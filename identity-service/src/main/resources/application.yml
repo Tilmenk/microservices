@@ -1,6 +1,30 @@
 # See http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 DEPLOYMENT_ENV: dev
 
+spring:
+  cache:
+    redis:
+      time-to-live: 5S #86400S # === 1 day
+  thymeleaf.cache: false
+  datasource:
+    username: compose-postgres
+    url: jdbc:postgresql://localhost:5432/identity-service
+    driverClassName: org.postgresql.Driver
+    password: compose-postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+    mvc:
+      pathmatch:
+        matching-strategy: ANT_PATH_MATCHER
+  main:
+    banner-mode:
+
 springdoc:
   swagger-ui:
     path: /swagger

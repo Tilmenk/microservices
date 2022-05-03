@@ -1,12 +1,11 @@
-package com.tilmenk.rabbitmq.model;
+package com.tilmenk.apiGateway.model;
 
-
-import com.tilmenk.rabbitmq.responseBodies.CurrenciesResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +17,9 @@ public class Team implements Serializable {
     private String creator;
     private CurrenciesResponse costs;
 
-    public Team(String name, String creator, CurrenciesResponse costs) {
-        this.name = name;
-        this.creator = creator;
-        this.costs = costs;
-    }
+    private List<String> pokemon;
 
+    public record CurrenciesResponse(double euro, double bitcoin,
+                                     double dollar) implements Serializable {
+    }
 }

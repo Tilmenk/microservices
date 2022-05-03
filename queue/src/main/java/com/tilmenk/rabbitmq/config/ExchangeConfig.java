@@ -29,6 +29,7 @@ public class ExchangeConfig {
         final RabbitTemplate rabbitTemplate =
                 new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(converter());
+        rabbitTemplate.setReceiveTimeout(10000);
         return rabbitTemplate;
     }
 }

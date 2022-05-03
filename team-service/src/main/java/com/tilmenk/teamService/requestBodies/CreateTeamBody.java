@@ -10,6 +10,6 @@ public class CreateTeamBody implements Serializable {
 
     private String name;
     private String creator;
-    private List<String> pokemonNames;
+    private List<String> pokemon;
 
 }

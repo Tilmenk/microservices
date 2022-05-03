@@ -1,9 +1,8 @@
 package com.tilmenk.teamService.controller;
 
-import com.tilmenk.teamService.model.Pokemon;
 import com.tilmenk.teamService.model.Team;
 import com.tilmenk.teamService.requestBodies.CreateTeamBody;
-import com.tilmenk.teamService.service.PokemonService;
+import com.tilmenk.teamService.requestBodies.DeleteTeamBody;
 import com.tilmenk.teamService.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +25,20 @@ public class TeamController {
 
     @Operation(summary = "get Teams out of this Service")
     @GetMapping
-    public List<Team> getTeams(){
+    public List<Team> getTeams() {
         return teamService.getTeams();
     }
 
     @Operation(summary = "create a Team for a User")
     @PostMapping
-    public ResponseEntity createTeam(@RequestBody CreateTeamBody createTeamBody){
-         teamService.createTeam(createTeamBody);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> createTeam(@RequestBody CreateTeamBody createTeamBody) {
+        return teamService.createTeam(createTeamBody);
+    }
+
+    @Operation(summary = "delete a Team for a User if hes the creator")
+    @DeleteMapping
+    public ResponseEntity<Object> deleteTeam(@RequestBody DeleteTeamBody deleteTeamBody) {
+        return teamService.deleteTeam(deleteTeamBody);
     }
 
 }

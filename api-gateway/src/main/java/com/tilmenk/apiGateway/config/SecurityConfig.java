@@ -44,7 +44,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // identity service
         http.authorizeRequests().antMatchers(POST, "/api/user/**").permitAll();
+        // swagger doc
+        http.authorizeRequests().antMatchers("/swagger-ui/**").permitAll();
+        http.authorizeRequests().antMatchers("/v3/api-docs/**").permitAll();
+        // team functionality
         http.authorizeRequests().antMatchers(GET, "/api/pokemon/**").hasAuthority("user_default");
         http.authorizeRequests().antMatchers(GET, "/api/team/**").hasAuthority("user_default");
         http.authorizeRequests().antMatchers(DELETE, "/api/team/**").hasAuthority("user_default");

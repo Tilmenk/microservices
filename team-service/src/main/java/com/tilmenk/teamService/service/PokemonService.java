@@ -1,8 +1,8 @@
 package com.tilmenk.teamService.service;
 
 import com.tilmenk.teamService.model.Pokemon;
+import com.tilmenk.teamService.model.externalApiResponse.ExternalPokeApiResponse;
 import com.tilmenk.teamService.repository.PokemonRepository;
-import com.tilmenk.teamService.requestBodies.ExternalPokeApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -16,25 +16,24 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class PokemonService {
-    private final PokemonRepository pokemonRepository;
-
-    private final WebClient wareHouseApiClient;
-    private final WebClient externalPokeApiClient;
-
     //deprecated
     //private final RestTemplate restTemplate;
     private static final String WAREHOUSE_URL_POKEMON = "http" +
             "://localhost:8080/api/pokemon";
-
     private static final String EXTERNAL_POKEAPI_URL = "https://pokeapi" +
             ".co/api/v2/pokemon/";
+    private final PokemonRepository pokemonRepository;
+    private final WebClient wareHouseApiClient;
+    private final WebClient externalPokeApiClient;
 
     @Autowired
     public PokemonService(PokemonRepository pokemonRepository,
                           WebClient.Builder wareHouseApiClientBuilder) {
         this.pokemonRepository = pokemonRepository;
-        this.wareHouseApiClient = wareHouseApiClientBuilder.baseUrl(WAREHOUSE_URL_POKEMON).build();
-        this.externalPokeApiClient = wareHouseApiClientBuilder.baseUrl(EXTERNAL_POKEAPI_URL).build();
+        this.wareHouseApiClient =
+                wareHouseApiClientBuilder.baseUrl(WAREHOUSE_URL_POKEMON).build();
+        this.externalPokeApiClient =
+                wareHouseApiClientBuilder.baseUrl(EXTERNAL_POKEAPI_URL).build();
     }
 
 
@@ -47,6 +46,7 @@ public class PokemonService {
     // warehouse
     private List<Pokemon> fetchPokemonsFromWarehouse() {
         try {
+            log.info("fetching pokemon from warehouse");
             return wareHouseApiClient.get().uri("/").retrieve().bodyToFlux(Pokemon.class).collectList().block();
         } catch (Exception e) {
             log.error(String.valueOf(e));
@@ -58,7 +58,7 @@ public class PokemonService {
         for (Pokemon pokemon : pokemonsToAdd) {
             Optional<Pokemon> pokemonFromThisDb =
                     pokemonRepository.findPokemonByName(pokemon.getName());
-            if(!pokemonFromThisDb.isPresent()) {
+            if (!pokemonFromThisDb.isPresent()) {
                 fetchImageUrlsForPokemon(pokemon);
                 pokemonRepository.save(pokemon);
             } else if (pokemonFromThisDb.get().getImageUrl_large() == null) {

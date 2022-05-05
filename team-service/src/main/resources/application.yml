@@ -18,7 +18,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: 'true'
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       enable-lazy-load-no-trans: true
     show-sql: 'true'
     mvc:

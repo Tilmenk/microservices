@@ -1,6 +1,7 @@
 package com.tilmenk.apiGateway.service;
 
-import com.tilmenk.apiGateway.model.User;
+import com.tilmenk.apiGateway.model.identityService.CreateUserRequest;
+import com.tilmenk.apiGateway.model.identityService.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private static final String IDENTITYSERVICE_URL =
             "http" + "://localhost" + ":8086/api";
-
 
     private final WebClient identityServiceClient;
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-        return identityServiceClient.post().uri("/user").body(BodyInserters.fromPublisher(Mono.just(user), User.class)).retrieve().bodyToMono(User.class).block();
+    public User saveUser(CreateUserRequest user) {
+        return identityServiceClient.post().uri("/user").body(BodyInserters.fromPublisher(Mono.just(user), CreateUserRequest.class)).retrieve().bodyToMono(User.class).block();
     }
 }

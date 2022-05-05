@@ -1,6 +1,7 @@
 package com.tilmenk.identityService.controller;
 
 import com.tilmenk.identityService.model.User;
+import com.tilmenk.identityService.model.apiGateway.CreateUserRequest;
 import com.tilmenk.identityService.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity saveUser(@RequestBody User user) {
+    public ResponseEntity<Object> saveUser(@RequestBody CreateUserRequest user) {
         try {
-            return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(user));
+            return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(userService.saveUser(User.builder().email(user.getEmail()).firstName(user.getFirstName()).password(user.getPassword()).build())));
         } catch (IllegalStateException e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().body(e.getMessage());

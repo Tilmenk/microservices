@@ -1,8 +1,9 @@
 package com.tilmenk.apiGateway.controller;
 
 
-import com.tilmenk.apiGateway.model.User;
+import com.tilmenk.apiGateway.model.identityService.CreateUserRequest;
 import com.tilmenk.apiGateway.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,10 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "create a new user", description = "email has to be "
+            + "unique")
     @PostMapping()
-    public ResponseEntity<Object> saveUser(@RequestBody User user) {
+    public ResponseEntity<Object> saveUser(@RequestBody CreateUserRequest user) {
         try {
             return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(user));
         } catch (WebClientResponseException e) {

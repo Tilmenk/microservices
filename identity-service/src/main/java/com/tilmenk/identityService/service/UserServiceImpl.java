@@ -24,13 +24,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        System.out.println("test ");
         Optional<User> userWithSameEmailInDb =
                 userRepo.findByEmail(user.getEmail());
         if (userWithSameEmailInDb.isPresent()) {
             throw new IllegalStateException("User with given email already " + "exists");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.getRoles().add(roleRepo.findByName("user_default").get());
+            user.setRoles(List.of(roleRepo.findByName("user_default").get()));
             return userRepo.save(user);
         }
     }

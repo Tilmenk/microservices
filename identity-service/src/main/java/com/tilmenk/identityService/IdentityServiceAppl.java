@@ -1,5 +1,6 @@
 package com.tilmenk.identityService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,13 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-//@PropertySource("classpath:application-${spring.profiles.active:default}
-// .properties")
+@Slf4j
 public class IdentityServiceAppl {
 
     public static void main(String[] args) {
         SpringApplication.run(IdentityServiceAppl.class, args);
-        System.out.println("App started !");
+        log.info("identity-service started !");
     }
 
     @Bean

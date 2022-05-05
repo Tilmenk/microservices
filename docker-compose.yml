@@ -4,11 +4,10 @@ services:
     container_name: teamServicePostgres
     image: 'postgres:13.1-alpine'
     environment:
-      POSTGRES_USER: compose-postgres
-      POSTGRES_PASSWORD: compose-postgres
+      POSTGRES_USER: team-service
+      POSTGRES_PASSWORD: team-service
       POSTGRES_DB: team-service
       PGDATA: /data/postgres
-
     volumes:
       - teamServicePostgres:/data/postgres
     ports:

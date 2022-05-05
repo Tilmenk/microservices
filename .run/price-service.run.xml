@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="price-service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="costs-service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" />
-    <module name="price-service" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="com.tilmenk.priceService.PriceServiceApp" />
+    <module name="costs-service" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.tilmenk.costsService.CostsServiceApp" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="com.tilmenk.priceService.*" />
+        <option name="PATTERN" value="com.tilmenk.costsService.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

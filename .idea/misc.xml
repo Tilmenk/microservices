@@ -9,7 +9,9 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/constantsAndSharedModel/pom.xml" />
         <option value="$PROJECT_DIR$/customer/pom.xml" />
+        <option value="$PROJECT_DIR$/queue/pom.xml" />
       </set>
     </option>
   </component>

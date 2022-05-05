@@ -39,6 +39,9 @@ public class Pokemon implements Serializable {
 
     private boolean legendary;
 
+    @Transient
+    private Currencies costs;
+
     private String ImageUrl_large;
     private String ImageUrl_small;
 

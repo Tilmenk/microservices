@@ -11,30 +11,32 @@
 
 ### description
 
-This **SpringBoot** + **Maven** Project consists of a 5 different Microservices<br/>
-It uses **Java 17** <br/>
+This **SpringBoot** + **Maven** Project consists of a 5 different Microservices.<br/>
+It uses **Java 17**.<br/>
 
 ### Microservices
 
 1. **team-service**
-    1. This service loads Pokemon and default teams from the warehouse
-    2. It also saves teams created by users and fetches Pokemon Image urls from a [third party API](https://pokeapi.co/)
-    3. This service also organize costs and currency assembling for responses to the api-gateway
-    4. This service has an own instance of a PostgreSQL db to save Pokemon and Teams ( costs and currencies aren't
+    1. This service loads **Pokemon** and default **teams** from the **warehouse**
+    2. It also saves **teams** created by **users** and fetches **Pokemon** Image urls from
+       a [third party API](https://pokeapi.co/)
+    3. This service also organize **costs** and **currency** assembling for responses to the **api-gateway**
+    4. This service has an own instance of a _PostgreSQL_ db to save **Pokemon** and **Teams** ( **costs** and **
+       currencies** aren't
        persisted )
-    5. Is connected to api-gateway through RabbitMQ
+    5. Is connected to **api-gateway** through _RabbitMQ_
 2. **costs-service**
-    1. Calculates costs for Pokemon and Teams of Pokemon
-    2. Is connected to team-service through RabbitMQ
+    1. Calculates costs for **Pokemon** and **Teams** of **Pokemon**
+    2. Is connected to **team-service** through _RabbitMQ_
 3. **currency-service**
-    1. Calculates given costs into 3 different currencies ( Euro, Dollar, Bitcoin )
-    2. Is connected to team-service through RabbitMQ
+    1. Calculates given **costs** into 3 different **currencies** ( Euro, Dollar, Bitcoin )
+    2. Is connected to **team-service** through _RabbitMQ_
 4. **identity-service**
-    1. This service has an own PostgreSQL instance to save Users and Roles for the Backend
-    2. It's connected to the api-gateway through HTTP
+    1. This service has an own _PostgreSQL_ instance to save **Users** and **Roles** for the Backend
+    2. It's connected to the **api-gateway** through _HTTP_
 5. **api-gateway**
-    1. This is the (only) entrance point for the Webclient to talk to the backend
-    2. Is connected to the team-service through RabbitMQ
+    1. This is the (only) entrance point for the **Webclient** to talk to the backend
+    2. Is connected to the **team-service** through _RabbitMQ_
     3. Documented through [Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)
 
 #### Building the project

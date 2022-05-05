@@ -1,20 +1,163 @@
 version: "3"
 services:
-  teamServicePostgres:
-    container_name: teamServicePostgres
+  rabbitMQ:
+    image: 'rabbitmq:3-management'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: rabbitMQ
+    networks:
+      - microservices-network
+  redis:
+    image: 'redis'
+    ports:
+      - "6379:6379"
+    container_name: redis
+    networks:
+      - microservices-network
+
+  api-gateway:
+    build:
+      context: ./
+      dockerfile: ./api-gateway/Dockerfile
+    ports:
+      - "9040:9040"
+    depends_on:
+      - rabbitMQ
+    container_name: api-gateway
+    networks:
+      - microservices-network
+    environment:
+      - SERVER_ERROR_INCLUDE_MESSAGE=always
+      - SERVER_PORT=9040
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=rabbitMQ
+      - TILMENK_URL_IDENTITYSERVICE=identity-service:9010
+
+  team-service:
+    build:
+      context: ./
+      dockerfile: ./team-service/Dockerfile
+    ports:
+      - "9000:9000"
+    depends_on:
+      - team-service-postgres
+      - redis
+      - rabbitMQ
+    container_name: team-service
+    networks:
+      - team-service-network
+      - microservices-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://team-service-postgres:5432/team-service
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SERVER_ERROR_INCLUDE_MESSAGE=always
+      - SERVER_PORT=9000
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=rabbitMQ
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+
+  identity-service:
+    build:
+      context: ./
+      dockerfile: ./identity-service/Dockerfile
+    ports:
+      - "9010:9010"
+    depends_on:
+      - identity-service-postgres
+      - redis
+      - rabbitMQ
+    container_name: identity-service
+    networks:
+      - identity-service-network
+      - microservices-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://identity-service-postgres:5432/identity-service
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW-SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL=true
+      - SERVER_ERROR_INCLUDE_MESSAGE=always
+      - SERVER_PORT=9010
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=rabbitMQ
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+
+  currency-service:
+    build:
+      context: ./
+      dockerfile: ./currency-service/Dockerfile
+    ports:
+      - "9020:9020"
+    depends_on:
+      - rabbitMQ
+    container_name: currency-service
+    networks:
+      - microservices-network
+    environment:
+      - SERVER_ERROR_INCLUDE_MESSAGE=always
+      - SERVER_PORT=9020
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=rabbitMQ
+
+  costs-service:
+    build:
+      context: ./
+      dockerfile: ./costs-service/Dockerfile
+    ports:
+      - "9030:9030"
+    depends_on:
+      - rabbitMQ
+    container_name: costs-service
+    networks:
+      - microservices-network
+    environment:
+      - SERVER_ERROR_INCLUDE_MESSAGE=always
+      - SERVER_PORT=9030
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=rabbitMQ
+
+  team-service-postgres:
+    container_name: team-service-postgres
     image: 'postgres:13.1-alpine'
     environment:
-      POSTGRES_USER: team-service
-      POSTGRES_PASSWORD: team-service
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: team-service
       PGDATA: /data/postgres
     volumes:
-      - teamServicePostgres:/data/postgres
+      - team-service-postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
-      - teamService
-    restart: unless-stopped
+      - team-service-network
+    restart: always
+
+  identity-service-postgres:
+    container_name: identity-service-postgres
+    image: 'postgres:13.1-alpine'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: identity-service
+      PGDATA: /data/postgres
+    volumes:
+      - identity-service-postgres:/data/postgres
+    ports:
+      - '5433:5432'
+    networks:
+      - identity-service-network
+    restart: always
+
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -26,16 +169,23 @@ services:
     ports:
       - "5050:80"
     depends_on:
-      - teamServicePostgres
+      - team-service-postgres
     networks:
-      - teamService
+      - team-service-network
+      - identity-service-network
+      - microservices-network
     restart: unless-stopped
 
 volumes:
-  teamServicePostgres:
+  team-service-postgres:
+  identity-service-postgres:
   pgadmin:
 
 networks:
-  teamService:
+  identity-service-network:
+    driver: bridge
+  team-service-network:
+    driver: bridge
+  microservices-network:
     driver: bridge
 

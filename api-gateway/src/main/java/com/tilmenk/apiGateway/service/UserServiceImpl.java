@@ -5,6 +5,7 @@ import com.tilmenk.apiGateway.model.identityService.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,14 +26,17 @@ import java.util.Collection;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private static final String IDENTITYSERVICE_URL =
-            "http" + "://localhost" + ":8086/api";
-
+            "http" + "://localhost" + ":9040/api";
     private final WebClient identityServiceClient;
+    private Environment env;
 
     @Autowired
-    public UserServiceImpl(WebClient.Builder clientBuilder) {
+    public UserServiceImpl(WebClient.Builder clientBuilder, Environment env) {
+        String identityserviceUrl = "http://" + env.getProperty(
+                "TILMENK_URL_IDENTITYSERVICE") + "/api";
         this.identityServiceClient =
-                clientBuilder.baseUrl(IDENTITYSERVICE_URL).build();
+                clientBuilder.baseUrl(identityserviceUrl).build();
+        this.env = env;
     }
 
     @Override

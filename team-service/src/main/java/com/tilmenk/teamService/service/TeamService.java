@@ -21,8 +21,8 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class TeamService {
-    private static final String WAREHOUSE_URL_TEAM =
-            "http" + "://localhost" + ":8080/api/team";
+    private static final String WAREHOUSE_URL_TEAM = "http://kbe-warehouse" +
+            ".herokuapp.com/api/team";
     private final TeamRepository teamRepository;
     private final PokemonRepository pokemonRepository;
     private WebClient wareHouseApiClient = null;

@@ -1,7 +1,9 @@
 package com.tilmenk.apiGateway.controller;
 
 
+import com.tilmenk.apiGateway.model.MyHttpResponse;
 import com.tilmenk.apiGateway.model.identityService.CreateUserRequest;
+import com.tilmenk.apiGateway.model.identityService.User;
 import com.tilmenk.apiGateway.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +28,12 @@ public class UserController {
     @Operation(summary = "create a new user", description = "email has to be "
             + "unique")
     @PostMapping()
-    public ResponseEntity<Object> saveUser(@RequestBody CreateUserRequest user) {
+    public ResponseEntity<MyHttpResponse<User>> saveUser(@RequestBody CreateUserRequest user) {
         try {
-            return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(user));
+            return ResponseEntity.created(URI.create("/api/user")).body(new MyHttpResponse<>(userService.saveUser(user), "success"));
         } catch (WebClientResponseException e) {
             log.error(e.getResponseBodyAsString());
-            return ResponseEntity.internalServerError().body(e.getResponseBodyAsString());
+            return ResponseEntity.internalServerError().body(new MyHttpResponse<>(e.getResponseBodyAsString()));
         }
     }
 }

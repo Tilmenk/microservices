@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity<Object> saveUser(@RequestBody CreateUserRequest user) {
         try {
-            return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(userService.saveUser(User.builder().email(user.getEmail()).firstName(user.getFirstName()).password(user.getPassword()).build())));
+            return ResponseEntity.created(URI.create("/api/user")).body(userService.saveUser(User.builder().email(user.getEmail()).firstName(user.getFirstName()).password(user.getPassword()).build()));
         } catch (IllegalStateException e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().body(e.getMessage());

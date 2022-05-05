@@ -40,8 +40,9 @@ It uses **Java 17** <br/>
 #### Building the project
 
 1. You can build and start the project with docker-compose by running  `docker-compose up` in the rootdir. <br/>
-2. For developing you can also use the intellij run-configurations if youre hosting a postgresqlDB with a db called **
-   team-service** and **identity-service**.</br>
+2. For developing you can also use the intellij run-configurations as long as you're hosting a postgresqlDB with a
+   db called **team-service**
+   and **identity-service**.</br>
    You also need to have redis running on your local host as well as rabbitMQ.
 
 #### deploying the project

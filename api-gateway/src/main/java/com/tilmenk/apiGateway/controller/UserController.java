@@ -9,13 +9,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.net.URI;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "api" + "/user")
@@ -36,4 +34,12 @@ public class UserController {
             return ResponseEntity.internalServerError().body(new MyHttpResponse<>(e.getResponseBodyAsString()));
         }
     }
+
+    @GetMapping(path = "/getName")
+    @ResponseBody
+    public ResponseEntity<MyHttpResponse<String>> getName(Principal principal) {
+        return ResponseEntity.ok().body(new MyHttpResponse<String>(principal.getName()));
+    }
+
+
 }

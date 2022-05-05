@@ -35,6 +35,7 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get the name from JWT")
     @GetMapping(path = "/getName")
     @ResponseBody
     public ResponseEntity<MyHttpResponse<String>> getName(Principal principal) {

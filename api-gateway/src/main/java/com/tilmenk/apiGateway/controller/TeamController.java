@@ -52,7 +52,7 @@ public class TeamController {
                 ResponseEntity.ok().body(new MyHttpResponse<>(response.message())) : ResponseEntity.status(HttpStatus.CONFLICT).body(new MyHttpResponse<>(response.message()));
     }
 
-    @Operation(summary = "delet an existing team", description =
+    @Operation(summary = "delete an existing team", description =
             "deleter " + "has" + " to be creator of team")
     @DeleteMapping(path = "/{teamId}")
     @ResponseBody

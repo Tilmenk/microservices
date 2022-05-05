@@ -42,6 +42,8 @@ It uses **Java 17**.<br/>
 #### Building the project
 
 1. You can build and start the project with docker-compose by running  `docker-compose up` in the rootdir. <br/>
+    1. Every sub-repo has its own Dockefile so you can also run every maven module on its own
+       with ```docker build ./service```
 2. For developing you can also use the intellij run-configurations as long as you're hosting a postgresqlDB with a
    db called **team-service**
    and **identity-service**.</br>

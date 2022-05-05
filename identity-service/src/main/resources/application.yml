@@ -29,6 +29,6 @@ springdoc:
   swagger-ui:
     path: /swagger
 server:
-  port: 8086
+  port: 9010
   error:
     include-message: always

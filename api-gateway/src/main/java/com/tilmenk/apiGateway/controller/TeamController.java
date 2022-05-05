@@ -41,29 +41,27 @@ public class TeamController {
                     "pokemonNames have to match a " + "pokemon in " + "team" + "-service DB")
     @PostMapping
     @ResponseBody
-    ResponseEntity<String> saveTeam(Principal principal,
-                                    @RequestBody CreateTeamRequest teamRequest) {
+    ResponseEntity<MyHttpResponse<String>> saveTeam(Principal principal,
+                                                    @RequestBody CreateTeamRequest teamRequest) {
         TeamWithPokemonNames teamToCreate = new TeamWithPokemonNames();
         teamToCreate.setCreator(principal.getName());
         teamToCreate.setName(teamRequest.getName());
         teamToCreate.setPokemon(teamRequest.getPokemon());
         RabbitResponse response = teamPublisher.publishSaveTeam(teamToCreate);
         return response.success() ?
-                ResponseEntity.ok().body(response.message()) :
-                ResponseEntity.status(HttpStatus.CONFLICT).body(response.message());
+                ResponseEntity.ok().body(new MyHttpResponse<>(response.message())) : ResponseEntity.status(HttpStatus.CONFLICT).body(new MyHttpResponse<>(response.message()));
     }
 
     @Operation(summary = "delet an existing team", description =
             "deleter " + "has" + " to be creator of team")
     @DeleteMapping(path = "/{teamId}")
     @ResponseBody
-    ResponseEntity<String> deleteTeam(Principal principal,
-                                      @PathVariable Long teamId) {
+    ResponseEntity<MyHttpResponse<String>> deleteTeam(Principal principal,
+                                                      @PathVariable Long teamId) {
         RabbitResponse response =
                 teamPublisher.publishDeleteTeam(new DeleteTeamData(teamId,
                         principal.getName()));
         return response.success() ?
-                ResponseEntity.ok().body(response.message()) :
-                ResponseEntity.status(HttpStatus.CONFLICT).body(response.message());
+                ResponseEntity.ok().body(new MyHttpResponse<>(response.message())) : ResponseEntity.status(HttpStatus.CONFLICT).body(new MyHttpResponse<>(response.message()));
     }
 }

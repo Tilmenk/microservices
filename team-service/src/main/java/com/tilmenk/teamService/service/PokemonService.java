@@ -18,8 +18,8 @@ import java.util.Optional;
 public class PokemonService {
     //deprecated
     //private final RestTemplate restTemplate;
-    private static final String WAREHOUSE_URL_POKEMON = "http" +
-            "://localhost:8080/api/pokemon";
+    private static final String WAREHOUSE_URL_POKEMON = "http://kbe-warehouse"
+            + ".herokuapp.com/api/pokemon";
     private static final String EXTERNAL_POKEAPI_URL = "https://pokeapi" +
             ".co/api/v2/pokemon/";
     private final PokemonRepository pokemonRepository;

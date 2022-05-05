@@ -1,11 +1,14 @@
 [![Technologie](https://img.shields.io/badge/2.6.6-Spring_Boot-blue)](https://spring.io/projects/spring-boot)
 [![Technologie](https://img.shields.io/badge/Maven-brown)](https://maven.apache.org/)
+[![Technologie](https://img.shields.io/badge/17-Java-pink)](https://maven.apache.org/)
+
 [![Technologie](https://img.shields.io/badge/redis-red)](https://redis.io/)
 [![Technologie](https://img.shields.io/badge/RabbitMQ-brightgreen)](https://www.rabbitmq.com/)
-[![Technologie](https://img.shields.io/badge/-Digital_Ocean-lightblue)](https://www.digitalocean.com/)
-[![Technologie](https://img.shields.io/badge/-Nginx-orange)](https://www.nginx.com/)
 [![Technologie](https://img.shields.io/badge/13-PostgreSQL-lightgrey)](https://www.postgresql.org/)
 [![Technologie](https://img.shields.io/badge/2.0-Docker-red)](https://react-icons.github.io/react-icons)
+
+[![Technologie](https://img.shields.io/badge/-Digital_Ocean-lightblue)](https://www.digitalocean.com/)
+[![Technologie](https://img.shields.io/badge/-Nginx-orange)](https://www.nginx.com/)
 
 ## KBE - Microservices
 

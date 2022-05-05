@@ -11,25 +11,45 @@
 
 ### description
 
-http://161.35.80.237/swagger-ui/index.html
+This **SpringBoot** + **Maven** Project consists of a 5 different Microservices<br/>
+It uses **Java 17** <br/>
 
-This **SpringBoot** + **Maven** Project consists of a Restful API and a Postgresql-DB<br/>
-It uses **Java 17** and **Postgresql 3**<br/>
+### Microservices
 
-#### running the project
+1. **team-service**
+    1. This service loads Pokemon and default teams from the warehouse
+    2. It also saves teams created by users and fetches Pokemon Image urls from a [third party API](https://pokeapi.co/)
+    3. This service also organize costs and currency assembling for responses to the api-gateway
+    4. This service has an own instance of a PostgreSQL db to save Pokemon and Teams ( costs and currencies aren't
+       persisted )
+    5. Is connected to api-gateway through RabbitMQ
+2. **costs-service**
+    1. Calculates costs for Pokemon and Teams of Pokemon
+    2. Is connected to team-service through RabbitMQ
+3. **currency-service**
+    1. Calculates given costs into 3 different currencies ( Euro, Dollar, Bitcoin )
+    2. Is connected to team-service through RabbitMQ
+4. **identity-service**
+    1. This service has an own PostgreSQL instance to save Users and Roles for the Backend
+    2. It's connected to the api-gateway through HTTP
+5. **api-gateway**
+    1. This is the (only) entrance point for the Webclient to talk to the backend
+    2. Is connected to the team-service through RabbitMQ
+    3. Documented through [Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)
 
-You can build and start the project with Docker by running  `docker-compose up --build` in rootdir or use the Intellij
-Configuration `dockerCompose` <br/>
+#### Building the project
+
+1. You can build and start the project with docker-compose by running  `docker-compose up` in the rootdir. <br/>
+2. For developing you can also use the intellij run-configurations if youre hosting a postgresqlDB with a db called **
+   team-service** and **identity-service**.</br>
+   You also need to have redis running on your local host as well as rabbitMQ.
 
 #### deploying the project
 
-A heroku dyno is configured and all you have to do to deploy to prod is this: `git push heroku master` ( if youre logged
-in to Heroku )
-
-heroku domain: **kbe-warehouse.herokuapp.com**
+For hosting we're using a Digital Ocean droplet running Ubuntu 20.04 LTS. You have to ssh into the Machine run git pull
+and build the changed components via docker-compose. </br>
+The Droplet is accessible under this address:  **_161.35.80.237:80_**
 
 #### API docs
 
-![alt text](./readMeResources/swagger.png)
-
-https://kbe-warehouse.herokuapp.com/swagger
+[Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)

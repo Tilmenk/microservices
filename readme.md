@@ -42,9 +42,7 @@ It uses **Java 17**.<br/>
     2. Is connected to the **team-service** through _RabbitMQ_
     3. Documented through [Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)
 
-### Build, Deployment & Docs
-
-#### Building the project
+### Building the project
 
 1. You can build and start the project with docker-compose by running  `docker-compose up` in the rootdir. <br/>
     1. Every sub-repo has its own Dockefile so you can also run every maven module on its own
@@ -54,12 +52,12 @@ It uses **Java 17**.<br/>
    and **identity-service**.</br>
    You also need to have redis running on your local host as well as rabbitMQ.
 
-#### Deploying the project
+### Deploying the project
 
 For hosting we're using a Digital Ocean droplet running Ubuntu 20.04 LTS. You have to ssh into the Machine run git pull
 and build the changed components via docker-compose. </br>
 The Droplet is accessible under this address:  **_161.35.80.237:80_**
 
-#### API docs
+### API docs
 
 [Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)

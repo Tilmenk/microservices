@@ -3,15 +3,15 @@ services:
   rabbitMQ:
     image: 'rabbitmq:3-management'
     expose:
-      - "5672:5672"
-      - "15672:15672"
+      - "5672"
+      - "15672"
     container_name: rabbitMQ
     networks:
       - microservices-network
   redis:
     image: 'redis'
     expose:
-      - "6379:6379"
+      - "6379"
     container_name: redis
     networks:
       - microservices-network
@@ -20,8 +20,8 @@ services:
     build:
       context: ./
       dockerfile: ./api-gateway/Dockerfile
-    ports:
-      - "9040:9040"
+    expose:
+      - "9040"
     depends_on:
       - rabbitMQ
     container_name: api-gateway
@@ -39,7 +39,7 @@ services:
       context: ./
       dockerfile: ./team-service/Dockerfile
     expose:
-      - "9000:9000"
+      - "9000"
     depends_on:
       - team-service-postgres
       - redis
@@ -68,7 +68,7 @@ services:
       context: ./
       dockerfile: ./identity-service/Dockerfile
     expose:
-      - "9010:9010"
+      - "9010"
     depends_on:
       - identity-service-postgres
       - redis
@@ -97,7 +97,7 @@ services:
       context: ./
       dockerfile: ./currency-service/Dockerfile
     expose:
-      - "9020:9020"
+      - "9020"
     depends_on:
       - rabbitMQ
     container_name: currency-service
@@ -114,7 +114,7 @@ services:
       context: ./
       dockerfile: ./costs-service/Dockerfile
     expose:
-      - "9030:9030"
+      - "9030"
     depends_on:
       - rabbitMQ
     container_name: costs-service
@@ -137,7 +137,7 @@ services:
     volumes:
       - team-service-postgres:/data/postgres
     expose:
-      - '5432:5432'
+      - '5432'
     networks:
       - team-service-network
     restart: always
@@ -153,7 +153,7 @@ services:
     volumes:
       - identity-service-postgres:/data/postgres
     expose:
-      - '5433:5432'
+      - '5432'
     networks:
       - identity-service-network
     restart: always
@@ -167,7 +167,7 @@ services:
     volumes:
       - pgadmin:/var/lib/pgadmin
     expose:
-      - "5050:80"
+      - "5050"
     depends_on:
       - team-service-postgres
     networks:

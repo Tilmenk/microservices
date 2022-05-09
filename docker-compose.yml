@@ -20,8 +20,8 @@ services:
     build:
       context: ./
       dockerfile: ./api-gateway/Dockerfile
-    expose:
-      - "9040"
+    ports:
+      - "9040:9040"
     depends_on:
       - rabbitMQ
     container_name: api-gateway

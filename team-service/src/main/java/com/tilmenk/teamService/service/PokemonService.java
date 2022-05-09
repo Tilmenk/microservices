@@ -71,8 +71,8 @@ public class PokemonService {
     private void fetchImageUrlsForPokemon(Pokemon pokemon) {
         ExternalPokeApiResponse externalPokeApiResponse =
                 externalPokeApiClient.get().uri(pokemon.getName()).retrieve().bodyToMono(ExternalPokeApiResponse.class).block();
-        pokemon.setImageUrl_large(externalPokeApiResponse.getSprites().getFront_default());
-        pokemon.setImageUrl_small(externalPokeApiResponse.getSprites().getOther().getOfficial_artwork().getFront_default());
+        pokemon.setImageUrl_small(externalPokeApiResponse.getSprites().getFront_default());
+        pokemon.setImageUrl_large(externalPokeApiResponse.getSprites().getOther().getOfficial_artwork().getFront_default());
     }
 
     // Gets called once on startup

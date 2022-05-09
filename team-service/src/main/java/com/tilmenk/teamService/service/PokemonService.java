@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -29,9 +30,13 @@ public class PokemonService {
     @Autowired
     public PokemonService(PokemonRepository pokemonRepository,
                           WebClient.Builder wareHouseApiClientBuilder) {
+
+        final ExchangeStrategies strategies =
+                ExchangeStrategies.builder().codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)).build();
+
         this.pokemonRepository = pokemonRepository;
         this.wareHouseApiClient =
-                wareHouseApiClientBuilder.baseUrl(WAREHOUSE_URL_POKEMON).build();
+                wareHouseApiClientBuilder.exchangeStrategies(strategies).baseUrl(WAREHOUSE_URL_POKEMON).build();
         this.externalPokeApiClient =
                 wareHouseApiClientBuilder.baseUrl(EXTERNAL_POKEAPI_URL).build();
     }

@@ -21,7 +21,7 @@ services:
       context: ./
       dockerfile: ./api-gateway/Dockerfile
     ports:
-      - "9040:9040"
+      - "127.0.0.1:9040:9040"
     depends_on:
       - rabbitMQ
     container_name: api-gateway

@@ -2,7 +2,7 @@ version: "3"
 services:
   rabbitMQ:
     image: 'rabbitmq:3-management'
-    ports:
+    expose:
       - "5672:5672"
       - "15672:15672"
     container_name: rabbitMQ
@@ -10,7 +10,7 @@ services:
       - microservices-network
   redis:
     image: 'redis'
-    ports:
+    expose:
       - "6379:6379"
     container_name: redis
     networks:
@@ -38,7 +38,7 @@ services:
     build:
       context: ./
       dockerfile: ./team-service/Dockerfile
-    ports:
+    expose:
       - "9000:9000"
     depends_on:
       - team-service-postgres
@@ -67,7 +67,7 @@ services:
     build:
       context: ./
       dockerfile: ./identity-service/Dockerfile
-    ports:
+    expose:
       - "9010:9010"
     depends_on:
       - identity-service-postgres
@@ -96,7 +96,7 @@ services:
     build:
       context: ./
       dockerfile: ./currency-service/Dockerfile
-    ports:
+    expose:
       - "9020:9020"
     depends_on:
       - rabbitMQ
@@ -113,7 +113,7 @@ services:
     build:
       context: ./
       dockerfile: ./costs-service/Dockerfile
-    ports:
+    expose:
       - "9030:9030"
     depends_on:
       - rabbitMQ
@@ -136,7 +136,7 @@ services:
       PGDATA: /data/postgres
     volumes:
       - team-service-postgres:/data/postgres
-    ports:
+    expose:
       - '5432:5432'
     networks:
       - team-service-network
@@ -152,7 +152,7 @@ services:
       PGDATA: /data/postgres
     volumes:
       - identity-service-postgres:/data/postgres
-    ports:
+    expose:
       - '5433:5432'
     networks:
       - identity-service-network
@@ -166,7 +166,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin:/var/lib/pgadmin
-    ports:
+    expose:
       - "5050:80"
     depends_on:
       - team-service-postgres

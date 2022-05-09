@@ -166,8 +166,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin:/var/lib/pgadmin
-    expose:
-      - "5050"
+    ports:
+      - "127.0.0.1:5050:5050"
     depends_on:
       - team-service-postgres
     networks:

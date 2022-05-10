@@ -56,7 +56,7 @@ It uses **Java 17**.<br/>
 
 For hosting we're using a Digital Ocean droplet running Ubuntu 20.04 LTS. You have to ssh into the Machine run git pull
 and build the changed components via docker-compose. </br>
-The Droplet is accessible under this address:  **_161.35.80.237:80_**
+The Droplet is accessible under this address:  **_161.35.80.237_**
 
 ### API docs
 

@@ -61,3 +61,7 @@ The Droplet is accessible under this address:  **_161.35.80.237_**
 ### API docs
 
 [Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)
+
+
+### Postgressql access 
+[Pgdata](http://161.35.80.237/pgdata)

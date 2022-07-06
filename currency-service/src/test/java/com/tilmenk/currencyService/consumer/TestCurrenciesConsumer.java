@@ -16,12 +16,15 @@ class TestCurrenciesConsumer {
     @Test
     void consumeAction_FetchCurrencies_forCosts() {
         //GIVEN
-        double costsEuro = 10.0;
-        double costsDollar = 7.0;
+        double costsEuro = 100.0;
+        double costsDollar = 70.0;
+        double costsBitcoin = 0.002777777777777778;
         //WHEN
         Currencies res = currenciesConsumer.consumeAction_FetchCurrencies_forCosts(costsEuro);
         //THEN
         assertEquals(costsDollar, res.dollar());
+        assertEquals(costsEuro, res.euro());
+        assertEquals(costsBitcoin, res.bitcoin());
     }
 
     @Test

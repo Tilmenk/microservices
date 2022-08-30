@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,11 +62,27 @@ class TestRoleServiceImpl {
     @Test
     void getRoles() {
         //GIVEN
-
+        Role r1 = new Role(1234, "r1");
+        Role r2 = new Role(1235, "r2");
+        List<Role> listOfRoles = new LinkedList<>();
+        listOfRoles.add(r1);
+        listOfRoles.add(r2);
         //WHEN
-
+        Mockito.when(roleRepoMock.findAll()).thenReturn(listOfRoles);
+        List<Role> res = roleService.getRoles();
         //THEN
+        assertEquals(listOfRoles.get(0), res.get(0));
+    }
 
+    @Test
+    void getRolesEmptyList() {
+        //GIVEN
+        List<Role> listOfRoles = new LinkedList<>();
+        //WHEN
+        Mockito.when(roleRepoMock.findAll()).thenReturn(listOfRoles);
+        List<Role> res = roleService.getRoles();
+        //THEN
+        assertTrue(res.isEmpty());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.tilmenk.identityService.service;
 
 import com.tilmenk.identityService.model.Role;
+import com.tilmenk.identityService.model.User;
 import com.tilmenk.identityService.repository.RoleRepo;
 import com.tilmenk.identityService.repository.UserRepo;
 import org.junit.jupiter.api.AfterEach;
@@ -21,16 +22,16 @@ class TestRoleServiceImpl {
     RoleRepo roleRepoMock;
     PasswordEncoder passwordEncoderMock;
     Role role1Mock;
-    Role role2Mock;
+    Role r1;
+    Role r2;
 
     @BeforeEach
     void setUp() {
-
         this.userRepoMock = Mockito.mock(UserRepo.class);
         this.roleRepoMock = Mockito.mock(RoleRepo.class);
         this.passwordEncoderMock = Mockito.mock(PasswordEncoder.class);
-        this.role1Mock = Mockito.mock(Role.class);
-        this.role2Mock = Mockito.mock(Role.class);
+        this.r1 = new Role(1234, "r1");
+        this.r2 = new Role(1235, "r2");
         this.roleService = new RoleServiceImpl(userRepoMock, roleRepoMock, passwordEncoderMock);
     }
 
@@ -62,8 +63,7 @@ class TestRoleServiceImpl {
     @Test
     void getRoles() {
         //GIVEN
-        Role r1 = new Role(1234, "r1");
-        Role r2 = new Role(1235, "r2");
+
         List<Role> listOfRoles = new LinkedList<>();
         listOfRoles.add(r1);
         listOfRoles.add(r2);
@@ -88,10 +88,14 @@ class TestRoleServiceImpl {
     @Test
     void addRoleToUser() {
         //GIVEN
-
+        String email = "ida@loenneberga.se";
+        String roleName = "role";
+        User user = Mockito.mock(User.class);
+        User spyUser = Mockito.spy(user);
         //WHEN
-
+        Mockito.when(userRepoMock.findByEmail(email)).thenReturn(Optional.of(user));
+        Mockito.when(roleRepoMock.findByName(roleName)).thenReturn(Optional.of(r1));
         //THEN
-
+        Mockito.verify(spyUser).getRoles().add(r1);
     }
 }

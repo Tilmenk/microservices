@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -90,11 +91,18 @@ class TestRoleServiceImpl {
         //GIVEN
         String email = "ida@loenneberga.se";
         String roleName = "role";
-        User user = Mockito.mock(User.class);
+        Role role1 = new Role("role1");
+        Role role2 = new Role("role2");
+        Role role3 = new Role("role3");
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role1);
+        User user = new User(12345L, email, "Ida", "password", roleList);
         User spyUser = Mockito.spy(user);
         //WHEN
-        Mockito.when(userRepoMock.findByEmail(email)).thenReturn(Optional.of(user));
-        Mockito.when(roleRepoMock.findByName(roleName)).thenReturn(Optional.of(r1));
+        Mockito.when(userRepoMock.findByEmail(email)).thenReturn(Optional.of(spyUser));
+        Mockito.when(roleRepoMock.findByName(roleName)).thenReturn(Optional.of(role2));
+
+        roleService.addRoleToUser(email, "role2");
         //THEN
         Mockito.verify(spyUser).getRoles().add(r1);
     }

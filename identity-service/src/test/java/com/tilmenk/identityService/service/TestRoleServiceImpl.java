@@ -89,21 +89,22 @@ class TestRoleServiceImpl {
     @Test
     void addRoleToUser() {
         //GIVEN
-        String email = "ida@loenneberga.se";
+        String email = "email";
         String roleName = "role";
         Role role1 = new Role("role1");
         Role role2 = new Role("role2");
         Role role3 = new Role("role3");
         List<Role> roleList = new ArrayList<>();
         roleList.add(role1);
+        List<Role> spyRoleList = Mockito.spy(roleList);
         User user = new User(12345L, email, "Ida", "password", roleList);
-        User spyUser = Mockito.spy(user);
         //WHEN
-        Mockito.when(userRepoMock.findByEmail(email)).thenReturn(Optional.of(spyUser));
-        Mockito.when(roleRepoMock.findByName(roleName)).thenReturn(Optional.of(role2));
-
-        roleService.addRoleToUser(email, "role2");
+        Mockito.when(userRepoMock.findByEmail(email)).thenReturn(Optional.of(user));
+        Mockito.when(roleRepoMock.findByName(roleName)).thenReturn(Optional.of(role3));
+        roleService.addRoleToUser(email, "role3");
         //THEN
-        Mockito.verify(spyUser).getRoles().add(r1);
+        Mockito.verify(spyRoleList).add(role3);
     }
+
+
 }

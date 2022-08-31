@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +41,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRoleToUser(String email, String roleName) {
         Optional<User> _user = userRepo.findByEmail(email);
-        Role role = roleRepo.findByName(roleName).get();
+        Optional<Role> _role = roleRepo.findByName(roleName);
+        _role.ifPresent((role ->
         _user.ifPresent((user) -> {
             user.getRoles().add(role);
-        });
+        })));
     }
 
 }

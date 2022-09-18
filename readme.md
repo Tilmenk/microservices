@@ -56,11 +56,11 @@ It uses **Java 17**.<br/>
 
 For hosting we're using a Digital Ocean droplet running Ubuntu 20.04 LTS. You have to ssh into the Machine run git pull
 and build the changed components via docker-compose. </br>
-The Droplet is accessible under this address:  **_161.35.80.237_**
+The Droplet is accessible under this address:  **_128.199.35.167_**
 
 ### API docs
 
-[Swagger - click to see exposed HTTP paths](http://161.35.80.237/swagger-ui/index.html)
+[Swagger - click to see exposed HTTP paths](http://128.199.35.167/swagger-ui/index.html)
 
 
 ### Postgressql access 

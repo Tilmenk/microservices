@@ -64,4 +64,4 @@ The Droplet is accessible under this address:  **_128.199.35.167_**
 
 
 ### Postgressql access 
-[Pgdata](http://161.35.80.237/pgdata)
+[Pgdata](http://128.199.35.167/pgdata)

@@ -4,6 +4,7 @@ package com.tilmenk.apiGateway.controller;
 import com.tilmenk.apiGateway.model.MyHttpResponse;
 import com.tilmenk.apiGateway.model.identityService.CreateUserRequest;
 import com.tilmenk.apiGateway.model.identityService.User;
+import com.tilmenk.apiGateway.model.login.LoginRequest;
 import com.tilmenk.apiGateway.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,11 @@ public class UserController {
         return ResponseEntity.ok().body(new MyHttpResponse<String>(principal.getName()));
     }
 
+    @Operation(summary = "Login")
+    @PostMapping(path = "/login")
+    @ResponseBody
+    public ResponseEntity<MyHttpResponse<String>> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok().build();
+    }
 
 }
